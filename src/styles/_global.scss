@@ -1,0 +1,88 @@
+@use "./variables" as *;
+// main styling
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  background-color: $secondaryColor;
+}
+html {
+  font-size: 48px;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+button {
+  border: none;
+}
+// Typography
+.font-hero {
+  font-size: $fontHero;
+  font-weight: 700;
+}
+.font-main {
+  font-size: $fontMain;
+  font-weight: 700;
+}
+.font-input {
+  font-size: $fontInput;
+  font-weight: 400;
+}
+.font-paragraph {
+  font-size: $fontParagraph;
+  font-weight: 400;
+}
+
+// Template colors
+.bg-primary {
+  background-color: $primaryColor;
+}
+.bg-secondary {
+  background-color: $secondaryColor;
+}
+.primary-color {
+  color: $primaryColor;
+}
+.secondary-color {
+  color: $secondaryColor;
+}
+.font-color {
+  color: $fontColor;
+}
+// template spacing
+// padding
+.p-sm {
+  padding: $spacingSmall;
+}
+.p-md {
+  padding: $spacingMedium;
+}
+.p-lg {
+  padding: $spacingLarge;
+}
+// gap
+.gap-sm {
+  padding: $spacingSmall;
+}
+.gap-md {
+  padding: $spacingMedium;
+}
+.gap-lg {
+  padding: $spacingLarge;
+}
+
+// Template transition duration
+.transition-300 {
+  transition: $transitionDuration;
+}
+// template border radious
+.radious-sm {
+  border-radius: $radiousSm;
+}

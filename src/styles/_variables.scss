@@ -1,0 +1,23 @@
+// template colors
+$primaryColor: #ffffff;
+$secondaryColor: #f2f2f2;
+$skillbg: #c4c4c4;
+$relatedCardBg: #f0f0f0;
+$sideMenuBg: #d9d9d9;
+$fontColor: #000000;
+
+//template fonts sizes
+$fontHero: clamp(1rem, 10vw, 1rem);
+$fontInput: clamp(0.54rem, 10vw, 0.54rem);
+$fontMain: clamp(0.5rem, 10vw, 0.5rem);
+$fontParagraph: clamp(0.375rem, 10vw, 0.375rem);
+
+// template transition duration
+$transitionDuration: 0.3s linear;
+
+// template spacing
+$spacingSmall: 12px;
+$spacingMedium: 16px;
+$spacingLarge: 24px;
+// Border radious
+$radiousSm: 5px;

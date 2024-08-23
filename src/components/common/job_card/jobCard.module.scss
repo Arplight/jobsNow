@@ -1,0 +1,23 @@
+@use "../../../styles/variables" as *;
+.card {
+  background-color: $primaryColor;
+  width: 50%;
+  padding: $spacingLarge;
+  display: flex;
+  flex-direction: column;
+  gap: $spacingLarge;
+}
+.skillsList {
+  display: flex;
+  gap: $spacingSmall;
+  flex-wrap: wrap;
+  li {
+    display: flex;
+  }
+}
+.jobLink {
+  width: max-content;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,12 @@
+@use "../../../styles/variables" as *;
+.skill {
+  background-color: $skillbg;
+  padding: $spacingSmall;
+  font-size: $fontParagraph;
+  border-radius: $radiousSm;
+  color: $fontColor;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,13 @@
+@use "./variables" as *;
+// cards hover effects
+.card-hover {
+  transition: $transitionDuration;
+  &:hover {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.144);
+  }
+}
+// showing top button
+.show-elevator {
+  opacity: 1 !important;
+  visibility: visible !important;
+}

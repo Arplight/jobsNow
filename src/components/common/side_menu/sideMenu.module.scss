@@ -1,0 +1,20 @@
+@use "../../../styles/variables" as *;
+
+.sideMenu {
+  background-color: $sideMenuBg;
+  padding: $spacingLarge;
+  border-radius: $radiousSm;
+  width: 30%;
+  h1 {
+    margin-bottom: $spacingSmall;
+  }
+  ul {
+    li {
+      margin-left: $spacingLarge;
+      font-size: $fontParagraph;
+      list-style: disc;
+      margin-bottom: $spacingSmall;
+      text-decoration: underline;
+    }
+  }
+}

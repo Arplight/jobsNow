@@ -1,0 +1,25 @@
+@use "../../../styles/variables" as *;
+.relatedCard {
+  background-color: $relatedCardBg;
+  width: 100%;
+  padding: $spacingLarge;
+  display: flex;
+  flex-direction: column;
+  gap: $spacingLarge;
+  border-radius: $radiousSm;
+  h1 {
+    text-decoration: underline;
+  }
+  ul {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+  }
+  li {
+    display: flex;
+    gap: 5px;
+    b {
+      font-weight: bold;
+    }
+  }
+}

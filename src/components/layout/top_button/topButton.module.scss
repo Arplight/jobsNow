@@ -1,0 +1,15 @@
+@use "../../../styles/variables" as *;
+.topButton {
+  font-size: calc($fontMain + 4px);
+  position: fixed;
+  inset: auto $fontMain $fontMain auto;
+  background-color: black;
+  color: white;
+  line-height: 0px;
+  padding: 4px;
+  border-radius: $radiousSm;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: $transitionDuration;
+}
