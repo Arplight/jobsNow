@@ -16,13 +16,31 @@ export interface IRelatedCard {
   relatedType: string;
   relatedImportance: string;
   relatedLevel: string;
+  relatedLink: string;
 }
 // side menu interface
-type menuList = {
+export type menuList = {
   label: string;
   path: string;
 };
 export interface ISideMenu {
   menuTitle: string;
   menuList: menuList[];
+}
+
+// Burger icon
+export interface IBurgerIcon {
+  openMenu: boolean;
+  setOpenMenu: (isOpen: boolean) => void;
+}
+
+// navbar pages
+export type TPages = {
+  pageLabel: string;
+  pageLink: string;
+};
+
+export interface INavList {
+  pages: TPages[];
+  currentPage: string;
 }

@@ -1,6 +1,7 @@
 import { FC } from "react";
 import Styles from "./relatedCard.module.scss";
 import { IRelatedCard } from "../../../lib/types/propTypes";
+import { Link } from "react-router-dom";
 
 interface IAttributes {
   attrLabel: string;
@@ -12,6 +13,7 @@ const RelatedCard: FC<IRelatedCard> = ({
   relatedType,
   relatedImportance,
   relatedLevel,
+  relatedLink,
 }) => {
   const attributes: IAttributes[] = [
     { attrLabel: "Type: ", attrValue: relatedType },
@@ -19,8 +21,10 @@ const RelatedCard: FC<IRelatedCard> = ({
     { attrLabel: "Level: ", attrValue: relatedLevel },
   ];
   return (
-    <div className={`${Styles.relatedCard} card-hover`}>
-      <h1 className="font-main font-color">{relatedTitle}</h1>
+    <div className={`${Styles.relatedCard} `}>
+      <Link to={relatedLink}>
+        <h1 className="font-main font-color">{relatedTitle}</h1>
+      </Link>
       <p className="font-paragraph font-color">
         the ability to communicate information and ideas in speaking so others
         will understand.

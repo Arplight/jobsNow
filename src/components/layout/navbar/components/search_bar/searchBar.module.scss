@@ -1,0 +1,52 @@
+@use "../../../../../styles/variables" as *;
+
+.searchContainer {
+  background-color: $primaryColor;
+  padding: $spacingLarge;
+  border-top: 3px solid $secondaryColor;
+}
+.searchBar {
+  border: 1px solid black;
+  background-color: $primaryColor;
+  border-radius: $radiousSm;
+  padding: $spacingSmall;
+  display: flex;
+  width: 60%;
+  gap: $spacingSmall;
+  margin: auto;
+  input {
+    width: 92%;
+    border: none;
+    font-size: $fontInput;
+    color: $fontColor;
+    &:focus {
+      outline: none;
+    }
+  }
+  button {
+    background-color: transparent;
+    width: 8%;
+    cursor: pointer;
+    img {
+      width: $fontInput;
+      height: $fontInput;
+    }
+  }
+}
+
+// responsive
+@media (max-width: $md) {
+  .searchBar {
+    width: 70%;
+  }
+}
+@media (max-width: $sm) {
+  .searchBar {
+    width: 80%;
+  }
+}
+@media (max-width: $xs) {
+  .searchBar {
+    width: 100%;
+  }
+}

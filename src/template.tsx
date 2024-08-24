@@ -1,6 +1,6 @@
 import JobCard from "./components/common/job_card/jobCard";
 import RelatedCard from "./components/common/related_card/relatedCard";
-import SearchBar from "./components/common/search_bar/searchBar";
+import SearchBar from "./components/layout/navbar/components/search_bar/searchBar";
 import SideMenu from "./components/common/side_menu/sideMenu";
 import SkillPill from "./components/common/skill_pill/skillPill";
 
@@ -55,6 +55,7 @@ const Template = () => {
         relatedImportance="3.7"
         relatedLevel="2.3"
         relatedType="knowledge"
+        relatedLink="/skill/f4a6f053-2cac-44fc-a87a-5368d7ca46ed"
       />
       <br />
       {/* search bar */}

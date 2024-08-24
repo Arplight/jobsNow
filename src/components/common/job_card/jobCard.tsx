@@ -7,7 +7,10 @@ import SkillPill from "../skill_pill/skillPill";
 const JobCard: FC<IJobCard> = ({ jobTitle, jobSkills, jobLink }) => {
   return (
     <div className={`${Styles.card} card-hover`}>
-      <h1 className="font-main font-color">{jobTitle}</h1>
+      <Link to={`/job/${jobLink}`} style={{ width: "max-content" }}>
+        <h1 className="font-main font-color">{jobTitle}</h1>
+      </Link>
+
       <div>
         <p className="font-paragraph font-color" style={{ marginBottom: 12 }}>
           Related skills:
@@ -24,9 +27,8 @@ const JobCard: FC<IJobCard> = ({ jobTitle, jobSkills, jobLink }) => {
             ))}
         </ul>
       </div>
-
       <Link
-        to={jobLink}
+        to={`/job/${jobLink}`}
         className={`font-paragraph font-color ${Styles.jobLink}`}
       >
         View job details

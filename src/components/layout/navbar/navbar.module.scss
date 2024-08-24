@@ -1,0 +1,105 @@
+@use "../../../styles/variables" as *;
+
+.navbar {
+  background-color: $primaryColor;
+  position: sticky;
+  z-index: 1000;
+  top: 0;
+  transition: $transitionDuration;
+  > div {
+    margin: auto;
+    padding-block: $spacingLarge;
+    display: flex;
+    justify-content: space-between;
+    &:nth-child(2) {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+// navbar lists
+.navListLarge {
+  display: flex;
+  gap: $spacingLarge;
+
+  li {
+    display: contents;
+    a {
+      transition: $transitionDuration;
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
+      padding-bottom: 3px;
+    }
+  }
+}
+
+.navListSmall {
+  position: absolute;
+  inset: 100% 0 auto auto;
+  width: 100%;
+  overflow: hidden;
+  opacity: 0;
+  transition: $transitionDuration;
+  padding-bottom: $spacingMedium;
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: $spacingSmall;
+    padding: $spacingSmall;
+    background-color: #ffffff;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.075);
+    transition: $transitionDuration;
+    transform: translateY(-100%);
+    border-top: 1px solid $secondaryColor;
+  }
+
+  li {
+    display: contents;
+    a {
+      width: max-content;
+      transition: $transitionDuration;
+      border-bottom: 1px solid rgba(0, 0, 0, 0);
+      padding-bottom: 3px;
+    }
+  }
+}
+
+// burger icon
+.burgerIcon {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  cursor: pointer;
+  overflow: hidden;
+
+  span {
+    transition: $transitionDuration;
+    background-color: $fontColor;
+    height: 3px;
+    width: 100%;
+    transform: rotate(0) translateX(0);
+    border-radius: 3px;
+  }
+}
+
+// Responsive design
+@media (max-width: $md) {
+  .navListLarge {
+    display: none;
+  }
+}
+
+@media (min-width: $md) {
+  .burgerIcon,
+  .navListSmall {
+    display: none !important;
+  }
+}

@@ -3,7 +3,7 @@ import _ from "lodash";
 
 const useScrollHandler = (target: number) => {
   const [isTarget, setIsTarget] = useState<boolean>(false);
-  const delay: number = 300;
+  const delay: number = 200;
   //   handler
   useEffect(() => {
     const handleScroll = _.debounce(() => {

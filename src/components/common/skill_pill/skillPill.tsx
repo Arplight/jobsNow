@@ -5,7 +5,7 @@ import Styles from "./skillPill.module.scss";
 
 const SkillPill: FC<ISkillPill> = ({ skillName, skillLink }) => {
   return (
-    <Link to={skillLink} className={Styles.skill}>
+    <Link to={`/skill/${skillLink}`} className={Styles.skill}>
       {skillName?.length > 20 ? skillName.slice(0, 20) + "..." : skillName}
     </Link>
   );

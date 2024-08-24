@@ -9,13 +9,17 @@ import Navbar from "./components/layout/navbar/navbar";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TopButton from "./components/layout/top_button/topButton";
-import Template from "./template";
+import History from "./pages/history/history";
+import useTopScroll from "./lib/utils/hooks/useTopScroll";
+// import Template from "./template";
 
 function App() {
+  // scroll to top handler upon routes change
+  useTopScroll();
   return (
     <>
       {/* React toast */}
-      {/* <ToastContainer
+      <ToastContainer
         position="top-center"
         autoClose={3000}
         hideProgressBar={false}
@@ -27,22 +31,22 @@ function App() {
         pauseOnHover
         theme="light"
         transition={Slide}
-      /> */}
+      />
       {/* Layout */}
-      {/* <Navbar /> */}
+      <Navbar />
       {/* Main routes */}
-      {/* <Routes>
+      <Routes>
         <Route path="/" element={<Wrapper />}>
           <Route path="" element={<Home />} />
           <Route path="search" element={<Search />} />
+          <Route path="history" element={<History />} />
           <Route path="job/:jobId" element={<Job />} />
           <Route path="skill/:skllId" element={<Skill />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-      <TopButton /> */}
-      <Template />
       <TopButton />
+      {/* <Template /> */}
     </>
   );
 }

@@ -2,7 +2,7 @@
 .topButton {
   font-size: calc($fontMain + 4px);
   position: fixed;
-  inset: auto $fontMain $fontMain auto;
+  inset: auto $fontParagraph $fontParagraph auto;
   background-color: black;
   color: white;
   line-height: 0px;

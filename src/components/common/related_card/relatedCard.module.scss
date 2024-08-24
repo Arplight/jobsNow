@@ -11,15 +11,18 @@
     text-decoration: underline;
   }
   ul {
-    width: 70%;
+    width: 80%;
     display: flex;
     justify-content: space-between;
-  }
-  li {
-    display: flex;
-    gap: 5px;
-    b {
-      font-weight: bold;
+    flex-wrap: wrap;
+    gap: $spacingSmall;
+    li {
+      display: flex;
+
+      gap: 5px;
+      b {
+        font-weight: bold;
+      }
     }
   }
 }
