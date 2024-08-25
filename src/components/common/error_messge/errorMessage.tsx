@@ -1,9 +1,6 @@
-import { FC, ReactNode } from "react";
+import { FC } from "react";
+import { IErrorMessage } from "../../../lib/types/propTypes";
 
-interface IErrorMessage {
-  errorMessage: string;
-  errorIcon: ReactNode;
-}
 const ErrorMessage: FC<IErrorMessage> = ({ errorIcon, errorMessage }) => {
   return (
     <div

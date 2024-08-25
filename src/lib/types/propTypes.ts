@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 // skill pill interface
 export interface ISkillPill {
   skillName: string;
@@ -39,8 +40,13 @@ export type TPages = {
   pageLabel: string;
   pageLink: string;
 };
-
+// Nav list
 export interface INavList {
   pages: TPages[];
   currentPage: string;
+}
+// Error message
+export interface IErrorMessage {
+  errorMessage: string;
+  errorIcon: ReactNode;
 }

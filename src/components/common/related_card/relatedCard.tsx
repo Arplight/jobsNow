@@ -26,8 +26,7 @@ const RelatedCard: FC<IRelatedCard> = ({
         <h1 className="font-main font-color">{relatedTitle}</h1>
       </Link>
       <p className="font-paragraph font-color">
-        the ability to communicate information and ideas in speaking so others
-        will understand.
+        description is not returned from the API, so this is placeholder text.
       </p>
       <ul>
         {attributes &&

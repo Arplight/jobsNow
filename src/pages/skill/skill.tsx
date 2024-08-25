@@ -1,67 +1,101 @@
+import { useDispatch, useSelector } from "react-redux";
 import RelatedCard from "../../components/common/related_card/relatedCard";
 import SideMenu from "../../components/common/side_menu/sideMenu";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import useSpinner from "../../lib/utils/hooks/useSpinner";
+import { ISkillInit } from "../../lib/redux/slices/skillSlice";
+import { AppDispatch, RootState } from "../../lib/redux/store";
+import { fetchSkill } from "../../lib/api/api";
+import { MdErrorOutline } from "react-icons/md";
+import ErrorMessage from "../../components/common/error_messge/errorMessage";
 
 const Skill = () => {
-  const data = Array.from({ length: 6 }, (_, i) => i);
+  // States
+  const { pathname } = useLocation();
+  const { loading, skill, error }: ISkillInit = useSelector(
+    (state: RootState) => state.skill
+  );
+  // dispatch instance
+  const dispatch: AppDispatch = useDispatch();
 
+  // data fetching
+  useEffect(() => {
+    const currentId = pathname.split("/").pop();
+    if (currentId) {
+      dispatch(fetchSkill(currentId));
+    }
+  }, [dispatch, pathname]);
+
+  // spinner handler
+  useSpinner({ stateIsLoading: loading });
   return (
     <>
-      {/* main title */}
-      <h1 className="font-hero font-color" style={{ marginBottom: 24 }}>
-        4th Grade Math Teacher
-      </h1>
-      {/* main section */}
-      <div className="main-section">
-        <section style={{ padding: 24, backgroundColor: "#ffffff" }}>
-          {/* description */}
-          <div style={{ marginBottom: 24 }}>
-            <h2 className="font-color font-main" style={{ marginBottom: 12 }}>
-              Description:
-            </h2>
-            <p className="font-color font-paragraph">
-              Skill description is not returned from the API, so this is
-              placeholder text.
-            </p>
-          </div>
-          {/* related jobs */}
-          <h2 className="font-color font-main" style={{ marginBottom: 12 }}>
-            Related Jobs:
-          </h2>
-          <ul>
-            {data &&
-              data.map((job, index) => (
-                <li key={index} style={{ marginBottom: 16 }}>
-                  <RelatedCard
-                    relatedTitle="Airline Pilots, Copilots, and Flight Engineers"
-                    relatedImportance="3.7"
-                    relatedLevel="2.3"
-                    relatedType="knowledge"
-                    relatedLink="/job/dasf325fe6"
-                  />
-                </li>
-              ))}
-          </ul>
-        </section>
-        {/* side menu */}
-        <SideMenu
-          menuTitle="Related Skills"
-          menuList={[
-            { label: "Frontend Developer", path: "/skill/frontend-developer" },
-            { label: "Backend Developer", path: "/skill/backend-developer" },
-            { label: "UI/UX Designer", path: "/skill/ui-ux-designer" },
-            {
-              label: "Full Stack Developer",
-              path: "/skill/full-stack-developer",
-            },
-            { label: "Data Scientist", path: "/skill/data-scientist" },
-            { label: "DevOps Engineer", path: "/skill/devops-engineer" },
-            { label: "Project Manager", path: "/skill/project-manager" },
-            { label: "Product Manager", path: "/skill/product-manager" },
-            { label: "Quality Assurance Engineer", path: "/skill/qa-engineer" },
-            { label: "Mobile Developer", path: "/skill/mobile-developer" },
-          ]}
+      {error ? (
+        <ErrorMessage
+          errorIcon={<MdErrorOutline size={100} />}
+          errorMessage="There is something wrong."
         />
-      </div>
+      ) : (
+        <>
+          {/* main title */}
+          <h1 className="font-hero font-color" style={{ marginBottom: 24 }}>
+            {(skill && skill.attributes?.name) || "Job title"}
+          </h1>
+          {/* main section */}
+          <div className="main-section">
+            <section style={{ padding: 24, backgroundColor: "#ffffff" }}>
+              {/* description */}
+              <div style={{ marginBottom: 24 }}>
+                <h2
+                  className="font-color font-main"
+                  style={{ marginBottom: 12 }}
+                >
+                  Description:
+                </h2>
+                <p className="font-color font-paragraph">
+                  Skill description is not returned from the API, so this is
+                  placeholder text.
+                </p>
+              </div>
+              {/* related jobs */}
+              <h2 className="font-color font-main" style={{ marginBottom: 12 }}>
+                Related Jobs:
+              </h2>
+              {skill && skill.relationships?.jobs?.length > 0 ? (
+                <ul>
+                  {skill.relationships?.jobs.map((job: { id: string }) => (
+                    <li key={job.id} style={{ marginBottom: 16 }}>
+                      <RelatedCard
+                        relatedTitle={job.id}
+                        relatedImportance={skill.attributes?.importance}
+                        relatedLevel={skill.attributes?.level}
+                        relatedType={skill.attributes?.type}
+                        relatedLink={`/job/${job.id}`}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <ErrorMessage
+                  errorIcon={<MdErrorOutline size={100} />}
+                  errorMessage="There is no related jobs."
+                />
+              )}
+            </section>
+            {/* side menu */}
+            {skill && skill.relationships?.skills?.length > 0 && (
+              <SideMenu
+                menuTitle="Related Skills"
+                menuList={skill.relationships.skills.map((skill) => ({
+                  label: skill.id,
+                  path: `/skill/${skill.id}`,
+                }))}
+              />
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 };

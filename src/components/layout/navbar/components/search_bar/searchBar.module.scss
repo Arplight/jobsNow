@@ -9,7 +9,7 @@
   border: 1px solid black;
   background-color: $primaryColor;
   border-radius: $radiousSm;
-  padding: $spacingSmall;
+  padding: 8px $spacingSmall;
   display: flex;
   width: 60%;
   gap: $spacingSmall;
@@ -25,6 +25,7 @@
   }
   button {
     background-color: transparent;
+    line-height: 0px;
     width: 8%;
     cursor: pointer;
     img {

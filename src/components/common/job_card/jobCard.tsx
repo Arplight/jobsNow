@@ -8,7 +8,9 @@ const JobCard: FC<IJobCard> = ({ jobTitle, jobSkills, jobLink }) => {
   return (
     <div className={`${Styles.card} card-hover`}>
       <Link to={`/job/${jobLink}`} style={{ width: "max-content" }}>
-        <h1 className="font-main font-color">{jobTitle}</h1>
+        <h1 className="font-main font-color" title={jobTitle}>
+          {jobTitle?.length > 25 ? jobTitle.slice(0, 25) + "..." : jobTitle}
+        </h1>
       </Link>
 
       <div>
