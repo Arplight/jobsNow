@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 // types
 export interface ISkillInit {
   skill: ISkillResponse | null;
+  skillsList: ISkillResponse[] | [];
   loading: boolean;
   error: string | null;
 }
@@ -13,10 +14,16 @@ const SkillSlice = createSlice({
   name: "skill",
   initialState: <ISkillInit>{
     skill: null,
+    skillsList: [],
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    // reseting the skills list
+    resetSkillsList: (state) => {
+      state.skillsList = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchSkill.pending, (state) => {
@@ -28,6 +35,7 @@ const SkillSlice = createSlice({
         (state, action: PayloadAction<{ data: { skill: ISkillResponse } }>) => {
           state.loading = false;
           state.skill = action.payload.data.skill;
+          state.skillsList = [...state.skillsList, action.payload.data.skill];
         }
       )
       .addCase(fetchSkill.rejected, (state, action) => {
@@ -39,3 +47,4 @@ const SkillSlice = createSlice({
   },
 });
 export default SkillSlice.reducer;
+export const { resetSkillsList } = SkillSlice.actions;

@@ -14,6 +14,8 @@ const TopButton = () => {
       className={`${Styles.topButton} ${isTarget && "show-elevator"}`}
       aria-label="top button"
       onClick={elevator}
+      type="button"
+      role="button"
     >
       <IoIosArrowUp />
     </button>

@@ -4,7 +4,8 @@
   background-color: $sideMenuBg;
   padding: $spacingLarge;
   border-radius: $radiousSm;
-  height: max-content;
+  max-height: 50vh;
+  overflow-y: scroll;
   h1 {
     margin-bottom: $spacingSmall;
   }

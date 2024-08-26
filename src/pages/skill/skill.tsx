@@ -4,16 +4,17 @@ import SideMenu from "../../components/common/side_menu/sideMenu";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import useSpinner from "../../lib/utils/hooks/useSpinner";
-import { ISkillInit } from "../../lib/redux/slices/skillSlice";
+import { ISkillInit, resetSkillsList } from "../../lib/redux/slices/skillSlice";
 import { AppDispatch, RootState } from "../../lib/redux/store";
 import { fetchSkill } from "../../lib/api/api";
 import { MdErrorOutline } from "react-icons/md";
 import ErrorMessage from "../../components/common/error_messge/errorMessage";
+import { ISkillResponse } from "../../lib/types/apiTypes";
 
 const Skill = () => {
   // States
   const { pathname } = useLocation();
-  const { loading, skill, error }: ISkillInit = useSelector(
+  const { loading, skill, error, skillsList }: ISkillInit = useSelector(
     (state: RootState) => state.skill
   );
   // dispatch instance
@@ -23,7 +24,17 @@ const Skill = () => {
   useEffect(() => {
     const currentId = pathname.split("/").pop();
     if (currentId) {
-      dispatch(fetchSkill(currentId));
+      dispatch(fetchSkill(currentId)).then((response) => {
+        if (response.payload) {
+          // dispatch(resetSkillsList());
+          // const skillPromises: ISkillResponse[] =
+          //   response.payload?.data?.skill?.relationships?.skills.map(
+          //     (skill: ISkillResponse) => dispatch(fetchSkill(skill.id))
+          //   );
+          // // I Used parallel fetching here to reduce the total time needed
+          // Promise.all(skillPromises);
+        }
+      });
     }
   }, [dispatch, pathname]);
 
@@ -84,11 +95,11 @@ const Skill = () => {
               )}
             </section>
             {/* side menu */}
-            {skill && skill.relationships?.skills?.length > 0 && (
+            {skillsList && skillsList.length > 0 && (
               <SideMenu
                 menuTitle="Related Skills"
-                menuList={skill.relationships.skills.map((skill) => ({
-                  label: skill.id,
+                menuList={skillsList.map((skill) => ({
+                  label: skill.attributes.name,
                   path: `/skill/${skill.id}`,
                 }))}
               />

@@ -12,6 +12,7 @@ const ErrorMessage: FC<IErrorMessage> = ({ errorIcon, errorMessage }) => {
         gap: 16,
         height: "80vh",
         padding: 32,
+        textAlign:"center"
       }}
     >
       {errorIcon}

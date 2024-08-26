@@ -15,13 +15,13 @@ const Home = () => {
   const { jobs, meta, loading, hasMore, error }: IJobsInit = useSelector(
     (state: RootState) => state.jobs
   );
-console.log(jobs)
+
   // dispatch instance
   const dispatch: AppDispatch = useDispatch();
 
   // Initial data fetching
   useEffect(() => {
-    if (jobs === null) dispatch(fetchJobs({ nextJobs: 0 }));
+    if (jobs === null) dispatch(fetchJobs(0));
   }, [dispatch, jobs]);
 
   // spinner handler
@@ -32,7 +32,7 @@ console.log(jobs)
     loading,
     hasMore,
     onLoadMore: () => {
-      dispatch(fetchJobs({ nextJobs: meta?.next || 0 }));
+      dispatch(fetchJobs(meta?.next || 0));
     },
   });
 

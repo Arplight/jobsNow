@@ -1,28 +1,24 @@
+import { useSelector } from "react-redux";
 import ErrorMessage from "../../components/common/error_messge/errorMessage";
 import SideMenu from "../../components/common/side_menu/sideMenu";
-import { menuList } from "../../lib/types/propTypes";
 import { VscSearchStop } from "react-icons/vsc";
+import { RootState } from "../../lib/redux/store";
 
 const History = () => {
-  const searchData: menuList[] = [
-    { label: "Frontend Developer", path: "/jobs/frontend-developer" },
-    { label: "Backend Developer", path: "/jobs/backend-developer" },
-    { label: "UI/UX Designer", path: "/jobs/ui-ux-designer" },
-    {
-      label: "Full Stack Developer",
-      path: "/jobs/full-stack-developer",
-    },
-    { label: "Data Scientist", path: "/jobs/data-scientist" },
-    { label: "DevOps Engineer", path: "/jobs/devops-engineer" },
-    { label: "Project Manager", path: "/jobs/project-manager" },
-    { label: "Product Manager", path: "/jobs/product-manager" },
-    { label: "Quality Assurance Engineer", path: "/jobs/qa-engineer" },
-    { label: "Mobile Developer", path: "/jobs/mobile-developer" },
-  ];
+  // getting search history
+  const { searchHistory }: { searchHistory: string[] } = useSelector(
+    (state: RootState) => state.search
+  );
   return (
     <div>
-      {searchData && searchData.length > 0 ? (
-        <SideMenu menuTitle="Search history" menuList={searchData} />
+      {searchHistory && searchHistory.length > 0 ? (
+        <SideMenu
+          menuTitle="Search history"
+          menuList={searchHistory.map((query) => ({
+            label: query,
+            path: `/search?query=${query}`,
+          }))}
+        />
       ) : (
         <ErrorMessage
           errorIcon={<VscSearchStop size={100} />}

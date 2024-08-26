@@ -6,27 +6,36 @@ import { IJobsResponse, ISkillResponse } from "../types/apiTypes";
 const BASE_URL: string = "https://skills-api-zeta.vercel.app/";
 
 // All jobs endpoint
-interface FetchJobsParams {
-  nextJobs?: number;
-  searchQuery?: string;
-}
 export const fetchJobs = createAsyncThunk<
   IJobsResponse,
-  FetchJobsParams,
+  number,
   { rejectValue: { message: string } }
->("jobs/allJobs", async ({ nextJobs, searchQuery }, { rejectWithValue }) => {
+>("jobs/allJobs", async (nextJobs, { rejectWithValue }) => {
   try {
-    const response = await axios.get<IJobsResponse>(
-      `${BASE_URL}jobs${searchQuery ? "/search" : ""}`,
-      {
-        params: { limit: 12, cursor: nextJobs, query: searchQuery },
-      }
-    );
-    if (searchQuery && searchQuery?.length > 0) {
-      return { data: response.data, withSearch: true };
+    const response = await axios.get<IJobsResponse>(`${BASE_URL}jobs`, {
+      params: { limit: 12, cursor: nextJobs },
+    });
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return rejectWithValue({ message: error.message });
     } else {
-      return { data: response.data, withSearch: false };
+      return rejectWithValue({ message: "An unexpected error occurred." });
     }
+  }
+});
+
+// search endpoint
+export const fetchSearchJobs = createAsyncThunk<
+  IJobsResponse,
+  string,
+  { rejectValue: { message: string } }
+>("jobs/search", async (searchQuery, { rejectWithValue }) => {
+  try {
+    const response = await axios.get<IJobsResponse>(`${BASE_URL}jobs/search`, {
+      params: { query: searchQuery.toLowerCase() },
+    });
+    return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       return rejectWithValue({ message: error.message });

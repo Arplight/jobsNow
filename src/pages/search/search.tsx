@@ -4,32 +4,50 @@ import SideMenu from "../../components/common/side_menu/sideMenu";
 import { AppDispatch, RootState } from "../../lib/redux/store";
 import { useEffect } from "react";
 import useSpinner from "../../lib/utils/hooks/useSpinner";
-import { fetchJobs } from "../../lib/api/api";
+import { fetchSearchJobs } from "../../lib/api/api";
 import ErrorMessage from "../../components/common/error_messge/errorMessage";
 import { IJobsInit } from "../../lib/redux/slices/jobsSlice";
-import { MdErrorOutline } from "react-icons/md";
+import { MdErrorOutline, MdSearchOff } from "react-icons/md";
 import { IJob } from "../../lib/types/apiTypes";
-import { MdSearchOff } from "react-icons/md";
-import { ISearchInit } from "../../lib/redux/slices/searchSlice";
+import {
+  ISearchInit,
+  updateSearchHistory,
+} from "../../lib/redux/slices/searchSlice";
+import _ from "lodash";
 
 const Search = () => {
   // States
-  const { jobs, meta, loading, error }: IJobsInit = useSelector(
-    (state: RootState) => state.jobs
-  );
-  const { searchQuery }: ISearchInit = useSelector(
+  const { searchResults, searchMeta, searchLoading, searchError }: IJobsInit =
+    useSelector((state: RootState) => state.jobs);
+  const { searchQuery, searchHistory }: ISearchInit = useSelector(
     (state: RootState) => state.search
   );
-  // dispatch instance
+  // checking for seeearch results
+  const hasResults = searchResults && searchResults.length > 0;
+
+  // Dispatch instance
   const dispatch: AppDispatch = useDispatch();
 
-  // Initial data fetching
+  // Search data fetching
   useEffect(() => {
-    dispatch(fetchJobs({ searchQuery: searchQuery, nextJobs: 0 }));
+    const searchHandler = _.debounce(() => {
+      if (searchQuery.length >= 3) {
+        dispatch(fetchSearchJobs(searchQuery));
+      }
+    }, 1000);
+    searchHandler();
+    return () => searchHandler.cancel();
   }, [dispatch, searchQuery]);
 
-  // spinner handler
-  useSpinner({ stateIsLoading: loading });
+  // search history handler
+  useEffect(() => {
+    if (searchQuery.length >= 3) {
+      if (hasResults) dispatch(updateSearchHistory(searchQuery));
+    }
+  }, [searchResults, dispatch]);
+
+  // Spinner handler
+  useSpinner({ stateIsLoading: searchLoading });
 
   const skills = [
     {
@@ -44,42 +62,33 @@ const Search = () => {
       skillName: "information ordering",
       skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
     },
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "active listening",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "information ordering",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
   ];
+
   return (
     <>
-      {error ? (
+      {searchError ? (
         <ErrorMessage
           errorIcon={<MdErrorOutline size={100} />}
           errorMessage="There is something wrong."
         />
       ) : (
         <>
-          {/* search title */}
-          <h1
-            className="font-hero font-color"
-            style={{ marginBottom: 16, paddingLeft: 16 }}
-          >
-            “{searchQuery}” jobs ({jobs && jobs.length > 0 ? meta?.count : "0"})
-          </h1>
-          {/* main section */}
+          {/* Search title */}
+          {hasResults && (
+            <h1
+              className="font-hero font-color"
+              style={{ marginBottom: 16, paddingLeft: 16 }}
+            >
+              “{searchQuery}” jobs ({searchMeta?.count || 0})
+            </h1>
+          )}
+          {/* Main section */}
           <div className="main-section">
-            {/* all search results */}
+            {/* All search results */}
             <section>
-              {jobs && jobs.length > 0 ? (
+              {hasResults ? (
                 <ul className="jobs-grid">
-                  {jobs.map((job: IJob) => (
+                  {searchResults.map((job: IJob) => (
                     <li key={job.id}>
                       <JobCard
                         jobTitle={job.attributes?.title}
@@ -92,35 +101,20 @@ const Search = () => {
               ) : (
                 <ErrorMessage
                   errorIcon={<MdSearchOff size={100} />}
-                  errorMessage="There is no search results available"
+                  errorMessage="There are no search results available"
                 />
               )}
             </section>
-            {/* side menu */}
-            <SideMenu
-              menuTitle="Search history"
-              menuList={[
-                {
-                  label: "Frontend Developer",
-                  path: "/jobs/frontend-developer",
-                },
-                { label: "Backend Developer", path: "/jobs/backend-developer" },
-                { label: "UI/UX Designer", path: "/jobs/ui-ux-designer" },
-                {
-                  label: "Full Stack Developer",
-                  path: "/jobs/full-stack-developer",
-                },
-                { label: "Data Scientist", path: "/jobs/data-scientist" },
-                { label: "DevOps Engineer", path: "/jobs/devops-engineer" },
-                { label: "Project Manager", path: "/jobs/project-manager" },
-                { label: "Product Manager", path: "/jobs/product-manager" },
-                {
-                  label: "Quality Assurance Engineer",
-                  path: "/jobs/qa-engineer",
-                },
-                { label: "Mobile Developer", path: "/jobs/mobile-developer" },
-              ]}
-            />
+            {/* Side menu */}
+            {searchHistory && searchHistory.length > 0 && (
+              <SideMenu
+                menuTitle="Search history"
+                menuList={searchHistory.map((query) => ({
+                  label: query,
+                  path: `/search?query=${query}`,
+                }))}
+              />
+            )}
           </div>
         </>
       )}
