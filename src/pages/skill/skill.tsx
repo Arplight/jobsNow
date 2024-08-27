@@ -6,40 +6,59 @@ import { useEffect } from "react";
 import useSpinner from "../../lib/utils/hooks/useSpinner";
 import { ISkillInit, resetSkillsList } from "../../lib/redux/slices/skillSlice";
 import { AppDispatch, RootState } from "../../lib/redux/store";
-import { fetchSkill } from "../../lib/api/api";
+import { fetchJobList, fetchSkill, fetchSkills } from "../../lib/api/api";
 import { MdErrorOutline } from "react-icons/md";
 import ErrorMessage from "../../components/common/error_messge/errorMessage";
-import { ISkillResponse } from "../../lib/types/apiTypes";
+import { IJob, ISkillResponse } from "../../lib/types/apiTypes";
+import { resetJobsList } from "../../lib/redux/slices/jobSlice";
 
 const Skill = () => {
   // States
-  const { pathname } = useLocation();
-  const { loading, skill, error, skillsList }: ISkillInit = useSelector(
-    (state: RootState) => state.skill
+  const { loading, skillsListLoading, skill, error, skillsList }: ISkillInit =
+    useSelector((state: RootState) => state.skill);
+  const { jobsList, jobsListLoading } = useSelector(
+    (state: RootState) => state.job
   );
-  // dispatch instance
-  const dispatch: AppDispatch = useDispatch();
 
-  // data fetching
+  // Instances
+  const dispatch = useDispatch<AppDispatch>();
+  const { pathname } = useLocation();
+
+  // Data fetching
   useEffect(() => {
     const currentId = pathname.split("/").pop();
     if (currentId) {
       dispatch(fetchSkill(currentId)).then((response) => {
         if (response.payload) {
-          // dispatch(resetSkillsList());
-          // const skillPromises: ISkillResponse[] =
-          //   response.payload?.data?.skill?.relationships?.skills.map(
-          //     (skill: ISkillResponse) => dispatch(fetchSkill(skill.id))
-          //   );
-          // // I Used parallel fetching here to reduce the total time needed
-          // Promise.all(skillPromises);
+          // reseting lists
+          dispatch(resetSkillsList());
+          dispatch(resetJobsList());
+          
+          // promises
+          const skillPromises =
+            response.payload?.data?.skill?.relationships?.skills.map(
+              (skill: ISkillResponse) =>
+                dispatch(fetchSkills(skill.id)).unwrap()
+            );
+          const jobsPromises =
+            response.payload?.data?.skill?.relationships?.jobs.map(
+              (job: IJob) => dispatch(fetchJobList(job.id)).unwrap()
+            );
+
+          // I Used parallel fetching here to reduce the total time needed
+          Promise.all([...skillPromises, ...jobsPromises]).catch((error) =>
+            console.error("Failed to fetch related data", error)
+          );
         }
       });
     }
   }, [dispatch, pathname]);
 
-  // spinner handler
-  useSpinner({ stateIsLoading: loading });
+  // Spinner handler
+  useSpinner({
+    stateIsLoading: !(!loading && !skillsListLoading && !jobsListLoading),
+  });
+
   return (
     <>
       {error ? (
@@ -49,14 +68,15 @@ const Skill = () => {
         />
       ) : (
         <>
-          {/* main title */}
+          {/* Main title */}
           <h1 className="font-hero font-color" style={{ marginBottom: 24 }}>
             {(skill && skill.attributes?.name) || "Job title"}
           </h1>
-          {/* main section */}
+
+          {/* Main section */}
           <div className="main-section">
             <section style={{ padding: 24, backgroundColor: "#ffffff" }}>
-              {/* description */}
+              {/* Description */}
               <div style={{ marginBottom: 24 }}>
                 <h2
                   className="font-color font-main"
@@ -69,32 +89,35 @@ const Skill = () => {
                   placeholder text.
                 </p>
               </div>
-              {/* related jobs */}
+
+              {/* Related jobs */}
               <h2 className="font-color font-main" style={{ marginBottom: 12 }}>
                 Related Jobs:
               </h2>
               {skill && skill.relationships?.jobs?.length > 0 ? (
                 <ul>
-                  {skill.relationships?.jobs.map((job: { id: string }) => (
-                    <li key={job.id} style={{ marginBottom: 16 }}>
-                      <RelatedCard
-                        relatedTitle={job.id}
-                        relatedImportance={skill.attributes?.importance}
-                        relatedLevel={skill.attributes?.level}
-                        relatedType={skill.attributes?.type}
-                        relatedLink={`/job/${job.id}`}
-                      />
-                    </li>
-                  ))}
+                  {jobsList &&
+                    jobsList.map((job: IJob) => (
+                      <li key={job.id} style={{ marginBottom: 16 }}>
+                        <RelatedCard
+                          relatedTitle={job.attributes?.title}
+                          relatedImportance={skill.attributes?.importance}
+                          relatedLevel={skill.attributes?.level}
+                          relatedType={job.type}
+                          relatedLink={`/job/${job.id}`}
+                        />
+                      </li>
+                    ))}
                 </ul>
               ) : (
                 <ErrorMessage
                   errorIcon={<MdErrorOutline size={100} />}
-                  errorMessage="There is no related jobs."
+                  errorMessage="There are no related jobs."
                 />
               )}
             </section>
-            {/* side menu */}
+
+            {/* Side menu */}
             {skillsList && skillsList.length > 0 && (
               <SideMenu
                 menuTitle="Related Skills"

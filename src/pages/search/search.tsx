@@ -22,13 +22,14 @@ const Search = () => {
   const { searchQuery, searchHistory }: ISearchInit = useSelector(
     (state: RootState) => state.search
   );
+
   // checking for seeearch results
   const hasResults = searchResults && searchResults.length > 0;
 
   // Dispatch instance
   const dispatch: AppDispatch = useDispatch();
 
-  // Search data fetching
+  // Search data fetching with debounce
   useEffect(() => {
     const searchHandler = _.debounce(() => {
       if (searchQuery.length >= 3) {
@@ -48,21 +49,6 @@ const Search = () => {
 
   // Spinner handler
   useSpinner({ stateIsLoading: searchLoading });
-
-  const skills = [
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "active listening",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "information ordering",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-  ];
 
   return (
     <>
@@ -93,7 +79,7 @@ const Search = () => {
                       <JobCard
                         jobTitle={job.attributes?.title}
                         jobLink={job.id}
-                        jobSkills={skills}
+                        jobSkills={job.relationships.skills}
                       />
                     </li>
                   ))}

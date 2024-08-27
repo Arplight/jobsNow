@@ -14,9 +14,10 @@ const History = () => {
       {searchHistory && searchHistory.length > 0 ? (
         <SideMenu
           menuTitle="Search history"
-          menuList={searchHistory.map((query) => ({
+          menuList={searchHistory.map((query, index) => ({
             label: query,
             path: `/search?query=${query}`,
+            id: index,
           }))}
         />
       ) : (

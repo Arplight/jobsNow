@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { IJobsResponse, ISkillResponse } from "../types/apiTypes";
+import { IJob, IJobsResponse } from "../types/apiTypes";
 
 // base url
 const BASE_URL: string = "https://skills-api-zeta.vercel.app/";
@@ -46,13 +46,32 @@ export const fetchSearchJobs = createAsyncThunk<
 });
 
 // single job endpoint
-export const fetchJob = createAsyncThunk<
-  IJobsResponse,
+export const fetchJob = createAsyncThunk(
+  "jobs/singleJob",
+  async (jobId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}job/${jobId}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue({
+          message: error.response?.data?.error?.message || "An error occurred.",
+        });
+      } else {
+        return rejectWithValue({ message: "An unexpected error occurred." });
+      }
+    }
+  }
+);
+
+// single job endpoint(for batch requests)
+export const fetchJobList = createAsyncThunk<
+  IJob,
   string | undefined,
   { rejectValue: { message: string } }
->("jobs/singleJob", async (jobId, { rejectWithValue }) => {
+>("jobs/jobList", async (jobId, { rejectWithValue }) => {
   try {
-    const response = await axios.get<IJobsResponse>(`${BASE_URL}job/${jobId}`);
+    const response = await axios.get(`${BASE_URL}job/${jobId}`);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -64,21 +83,38 @@ export const fetchJob = createAsyncThunk<
 });
 
 // skill endpoint
-export const fetchSkill = createAsyncThunk<
-  ISkillResponse,
-  string | undefined,
-  { rejectValue: { message: string } }
->("skills/singleSkill", async (skillId, { rejectWithValue }) => {
-  try {
-    const response = await axios.get<ISkillResponse>(
-      `${BASE_URL}skill/${skillId}`
-    );
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      return rejectWithValue({ message: error.response?.data?.error?.message });
-    } else {
-      return rejectWithValue({ message: "An unexpected error occurred." });
+export const fetchSkill = createAsyncThunk(
+  "skills/singleSkill",
+  async (skillId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}skill/${skillId}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue({
+          message: error.response?.data?.error?.message,
+        });
+      } else {
+        return rejectWithValue({ message: "An unexpected error occurred." });
+      }
     }
   }
-});
+);
+
+export const fetchSkills = createAsyncThunk(
+  "skills/Skills",
+  async (skillId: string, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}skill/${skillId}`);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue({
+          message: error.response?.data?.error?.message,
+        });
+      } else {
+        return rejectWithValue({ message: "An unexpected error occurred." });
+      }
+    }
+  }
+);

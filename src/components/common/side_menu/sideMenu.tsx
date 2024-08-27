@@ -9,8 +9,8 @@ const SideMenu: FC<ISideMenu> = ({ menuTitle, menuList }) => {
       <h1 className="font-main font-color">{menuTitle}:</h1>
       <ul>
         {menuList &&
-          menuList.map((list, index) => (
-            <li key={index}>
+          menuList.map((list , index) => (
+            <li key={`${list.label}-${index}`}>
               <Link to={list.path} className="font-color">
                 {list.label}
               </Link>

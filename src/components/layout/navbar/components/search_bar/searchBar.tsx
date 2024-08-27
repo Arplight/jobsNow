@@ -23,7 +23,7 @@ const SearchBar = () => {
   // instances
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  
+
   // query handler
   const queryHandler = useCallback(
     (query: string) => {
@@ -68,6 +68,7 @@ const SearchBar = () => {
     <div className={Styles.searchContainer}>
       <div className={Styles.searchBar}>
         <input
+          data-testid="search-input"
           type="text"
           name="search-bar"
           id="search-bar"
@@ -77,6 +78,7 @@ const SearchBar = () => {
           onChange={handleInputChange}
         />
         <button
+          data-testid="search-button"
           type="submit"
           role="button"
           aria-label="search button"
@@ -86,6 +88,7 @@ const SearchBar = () => {
         </button>
         {menuIsOpened && (
           <ul
+            data-testid="search-menu"
             className={Styles.searchMenu}
             role="listbox"
             aria-labelledby="search-bar"
@@ -95,6 +98,7 @@ const SearchBar = () => {
               role="button"
               aria-label="close menu"
               onClick={() => setMenuIsOpened(false)}
+              data-testid="search-close-button"
             >
               <IoMdClose size={16} />
             </button>
@@ -102,6 +106,7 @@ const SearchBar = () => {
               <li
                 key={result.id}
                 onClick={() => handleMenuSelection(result.attributes?.title)}
+                data-testid={`search-menu-item`}
               >
                 <p className="font-color font-paragraph">
                   {result.attributes?.title}

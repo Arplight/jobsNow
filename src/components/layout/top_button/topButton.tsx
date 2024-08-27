@@ -16,8 +16,9 @@ const TopButton = () => {
       onClick={elevator}
       type="button"
       role="button"
+      data-testid="top-button"
     >
-      <IoIosArrowUp />
+      <IoIosArrowUp data-testid="top-button-icon" />
     </button>
   );
 };

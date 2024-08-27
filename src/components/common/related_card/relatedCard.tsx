@@ -15,6 +15,7 @@ const RelatedCard: FC<IRelatedCard> = ({
   relatedLevel,
   relatedLink,
 }) => {
+  // attributes
   const attributes: IAttributes[] = [
     { attrLabel: "Type: ", attrValue: relatedType },
     { attrLabel: "Importance: ", attrValue: relatedImportance },

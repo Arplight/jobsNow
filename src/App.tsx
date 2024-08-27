@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import TopButton from "./components/layout/top_button/topButton";
 import History from "./pages/history/history";
 import useTopScroll from "./lib/utils/hooks/useTopScroll";
-// import Template from "./template";
 
 function App() {
   // scroll to top handler upon routes change
@@ -46,7 +45,6 @@ function App() {
         </Route>
       </Routes>
       <TopButton />
-      {/* <Template /> */}
     </>
   );
 }

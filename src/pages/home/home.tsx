@@ -15,7 +15,6 @@ const Home = () => {
   const { jobs, meta, loading, hasMore, error }: IJobsInit = useSelector(
     (state: RootState) => state.jobs
   );
-
   // dispatch instance
   const dispatch: AppDispatch = useDispatch();
 
@@ -27,7 +26,7 @@ const Home = () => {
   // spinner handler
   useSpinner({ stateIsLoading: loading });
 
-  // intersection Observer
+  // intersection Observer for infinite scroll
   const { lastRef } = useObserver({
     loading,
     hasMore,
@@ -35,33 +34,6 @@ const Home = () => {
       dispatch(fetchJobs(meta?.next || 0));
     },
   });
-
-  const skills = [
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-    {
-      skillName: "operation monitoring",
-      skillLink: "f4a6f053-2cac-44fc-a87a-5368d7ca46ed",
-    },
-  ];
 
   return (
     <>
@@ -90,7 +62,7 @@ const Home = () => {
                   <JobCard
                     jobTitle={job.attributes?.title}
                     jobLink={job.id}
-                    jobSkills={skills}
+                    jobSkills={job.relationships.skills}
                   />
                 </li>
               ))}

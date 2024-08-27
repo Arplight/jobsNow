@@ -3,11 +3,15 @@ import { ReactNode } from "react";
 export interface ISkillPill {
   skillName: string;
   skillLink: string;
+  skillIsLoading: boolean;
 }
 // job card interface
+type Skill = {
+  id: string;
+};
 export interface IJobCard {
   jobTitle: string;
-  jobSkills: ISkillPill[];
+  jobSkills: Skill[];
   jobLink: string;
 }
 
